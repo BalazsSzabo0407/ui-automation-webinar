@@ -13,19 +13,23 @@ class CareerPage {
         this.getLocation = location => this.locationFilterBox.element(by.cssContainingText("title=Debrecen]", location));
 
         this.skillsSelect = this.searchForm.element(by.css('.multi-select-filter'));
-        this.getSkillsCheckbox = skill => this.skillsSelect.element(by.cssContainingText("#jobSearchFilterForm > div:nth-child(3) > div > div.multi-select-dropdown-container > div > ul:nth-child(2) > li:nth-child(1) > label > span", skill));
-        this.selectedSkills = this.skillsSelect.all(by.css('.selected-items'));
-                                                                    
-        const SEARCH_RESULT_ITEM_SELECTOR = '.search-result__list';
-        this.searchResultItems = element.all(by.css(SEARCH_RESULT_ITEM_SELECTOR));
-        this.nameOfPosition = position => position.element(by.css('li.search-result__item:nth-child(1) > div:nth-child(1) > h5:nth-child(1) > a:nth-child(1)'));
-        this.locationOfPosition = position => position.element(by.css('li.search-result__item:nth-child(1) > div:nth-child(1) > strong:nth-child(2)'));
-        this.applyLinkOfPosition = position => position.element(by.css('li.search-result__item:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1)'));
-        this.jobDescription = element(by.css('li.search-result__item:nth-child(1) > p:nth-child(2)'));
+        this.getSkillsCheckbox = skill => this.skillsSelect.element(by.cssContainingText("span.checkbox-custom-label", skill));
+        this.selectedSkills = element.all(by.css('.selected-items'));
 
-        this.getResultByPosition = name => this.searchResultItems.filter(item => {
-            return this.nameOfPosition(item).getText().then(position => position.trim() === name);
-        }).first();
+        const SEARCH_RESULT_ITEM_SELECTOR = '.search-result__list .search-result__item';
+        this.searchResultItems = element.all(by.css(SEARCH_RESULT_ITEM_SELECTOR));
+        this.nameOfPosition = position => position.element(by.css('.search-result__item-name'));
+        this.locationOfPosition = position => position.element(by.css('.search-result__location'));
+        this.applyLinkOfPosition = position => position.element(by.css('.search-result__item-apply'));
+        this.jobDescription = position => position.element(by.css('.search-result__item-description'));
+
+        //this.getResultByPosition =  name => this.searchResultItems.all(by.cssContainingText(".search-result_item-name", name));
+
+        this.getResultByPosition = () => element(by.css("li.search-result__item:last-child"));
+
+        //this.getResultByPosition = name => this.searchResultItems.filter(item => {
+        //    return this.nameOfPosition(item).getText().then(position => position.trim() === name);
+        //}).first();
     }
 
     selectLocation(location) {
@@ -53,8 +57,16 @@ class CareerPage {
         return skillsCheckbox.click();
     }
 
-    async search () {
-        await this.searchButton.click();
+    search() {
+        this.searchButton.click();
+        return browser.wait(() => {
+            return this.searchResultItems.count().then(n => n == 28); //need to scroll down because epam isnt loading all the items
+        }, GLOBAL_TIMEOUT);
+    }
+
+    async applyForPosition(position) {
+        this.applyLinkOfPosition(position).click();
+        return browser.wait(ec.visibilityOf(this.jobDescription), GLOBAL_TIMEOUT);
     }
 }
 

@@ -45,40 +45,45 @@ describe("Search for job", function () {
             });
 
             it("should be able to filter to a given skillset", () => {
-                 return expect(careerPage.selectedSkills.getText()).to.eventually.contain("Software, System, and Test Engineering");
+                 return expect(careerPage.selectedSkills.getText()).to.eventually.contain("SOFTWARE, SYSTEM, AND TEST ENGINEERING");
 
             });
         });
-        describe("Searching", () => {
-            let position
+        describe.only("Searching", () => {
+            let position;
 
             beforeEach(() => {
                 careerPage.selectLocation("Debrecen");
                 careerPage.toggleSkills("Software, System, and Test Engineering");
                 return careerPage.search().then(() => {
-                    position = careerPage.getResultByPosition("Software, System, and Test Engineering");
-                });
+                    position = careerPage.getResultByPosition();
+                    });
             });
 
             it("should have fitting job found", () => {
-
+                return expect(position.isDisplayed()).to.eventually.be.true;
+                
             });
 
             it("should have job with proper location", () => {
-                return expect(careerPage.locationOfPosition(position).getText().then("Hungary")).to.eventually.equal("Hungary");
+                return expect(careerPage.locationOfPosition(position).getText()).to.eventually.contain("HUNGARY");
             });
 
             it("should have apply button", () => {
-
+                return expect(careerPage.applyLinkOfPosition(position).isDisplayed()).to.eventually.true;
             });
 
             describe("Apply for a job", () => {
-                it("should have proper position name in description", () => {
+                //beforeEach(() => {
+                 //   return careerPage.applyForPosition(position);
+                //});
 
+                it("should have proper position name in description", () => {
+                    return expect(careerPage.jobDescription(position).getText()).to.eventually.contain("Test Automation Engineer")
                 });
 
                 it("should have proper location in description", () => {
-
+                    return expect(careerPage.jobDescription(position).getText()).to.eventually.contain("Hungary")
                 });
             });
         });
