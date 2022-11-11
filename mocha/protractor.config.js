@@ -25,7 +25,7 @@ exports.config = {
         try {
             await browser.manage().window().maximize();
         } catch (e) {
-            await browser.manage().window().setSize(1800, 1012);
+            await browser.manage().window().setSize(1920, 1024);
         }
     }
 };

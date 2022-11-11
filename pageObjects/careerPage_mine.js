@@ -21,8 +21,10 @@ class CareerPage {
         this.nameOfPosition = position => position.element(by.css('.search-result__item-name'));
         this.locationOfPosition = position => position.element(by.css('.search-result__location'));
         this.applyLinkOfPosition = position => position.element(by.css('.search-result__item-apply'));
-        this.jobDescription = position => position.element(by.css('.search-result__item-description'));
+        this.jobDescription = element(by.css('.recruiting-page__top-description'));
+        this.applyForJob = element(by.css("section [href=#apply] span"))
 
+        this.searchList = element(by.css(".search-result__list"))
 
         //this.getResultByPosition = () => element(by.css("li.search-result__item:last-child"));
 
@@ -30,8 +32,10 @@ class CareerPage {
         //    return this.nameOfPosition(item).getText().then(position => position.trim() === name);
         //}).first();
     }
-    getResultByPosition(name) {
-         element.all(by.xpath(`//*[@class="search-result__item"][.//[@class="search-result__item-name"][contains(normalize-space(.),"${name}")]]`));
+    getFirstResultByPosition(name) {
+        browser.wait(ec.textToBePresentInElement(this.searchList,name),8000)
+        return element(by.xpath(`//*[@class="search-result__item"][.//*[@class="search-result__item-name"][contains(normalize-space(.),"${name}")]]`));
+
     }
 
     selectLocation(location) {
@@ -62,7 +66,7 @@ class CareerPage {
     search() {
         this.searchButton.click();
         return browser.wait(() => {
-            return this.searchResultItems.count().then(n => n == 28); //need to scroll down because epam isnt loading all the items
+            return this.searchResultItems.count().then(n => n > 0);
         }, GLOBAL_TIMEOUT);
     }
 
