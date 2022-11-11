@@ -23,13 +23,15 @@ class CareerPage {
         this.applyLinkOfPosition = position => position.element(by.css('.search-result__item-apply'));
         this.jobDescription = position => position.element(by.css('.search-result__item-description'));
 
-        //this.getResultByPosition =  name => this.searchResultItems.all(by.cssContainingText(".search-result_item-name", name));
 
-        this.getResultByPosition = () => element(by.css("li.search-result__item:last-child"));
+        //this.getResultByPosition = () => element(by.css("li.search-result__item:last-child"));
 
         //this.getResultByPosition = name => this.searchResultItems.filter(item => {
         //    return this.nameOfPosition(item).getText().then(position => position.trim() === name);
         //}).first();
+    }
+    getResultByPosition(name) {
+         element.all(by.xpath(`//*[@class="search-result__item"][.//[@class="search-result__item-name"][contains(normalize-space(.),"${name}")]]`));
     }
 
     selectLocation(location) {
