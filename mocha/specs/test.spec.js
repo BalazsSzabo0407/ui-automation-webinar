@@ -10,11 +10,12 @@ describe("Search for job", function () {
     this.timeout(GLOBAL_TIMEOUT);
 
     beforeEach(() => {
-        return careerPage.load();
+        return careerPage.load(); 
     });
-
+    
     describe("Careers page", () => {
         it("should be opened", () => {
+            careerPage.acceptCookies();
             return expect(careerPage.logo.isDisplayed()).to.eventually.be.true;
         });
     });
