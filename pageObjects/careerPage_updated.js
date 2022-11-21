@@ -1,5 +1,6 @@
 'use strict';
 const { element, browser } = require("protractor");
+const { DriverProvider } = require("protractor/built/driverProviders");
 const { Key } = require("selenium-webdriver");
 
 class CareerPage {
@@ -11,7 +12,7 @@ class CareerPage {
         this.cookieAcceptButton = element(by.css("[id=onetrust-accept-btn-handler]"))
 
         this.locationFilterBox = this.searchForm.element(by.css(".recruiting-search__location"))
-        this.selectedLocation = this.locationFilterBox.element(by.css("[title=Debrecen]"))
+        //this.selectedLocation = this.locationFilterBox.element(by.css("[title=Debrecen]")
         this.getLocation = location => this.locationFilterBox.element(by.cssContainingText("title=Debrecen]", location));
 
         this.skillsSelect = this.searchForm.element(by.css('.multi-select-filter'));
@@ -29,17 +30,25 @@ class CareerPage {
 
         this.searchList = element(by.css(".search-result__list"))
 
+        //this.getResultByPosition = () => element(by.css("li.search-result__item:last-child"));
+
+        //this.getResultByPosition = name => this.searchResultItems.filter(item => {
+        //    return this.nameOfPosition(item).getText().then(position => position.trim() === name);
+        //}).first();
+    }
+    selectedLocation(location) {
+        return this.locationFilterBox.element(by.css(`[title=${location}`))
     }
 
     acceptCookies() {
-
-        browser.wait(ec.textToBePresentInElement(this.cookieAcceptButton,"Accept All"),GLOBAL_TIMEOUT)
+        //browser.manage().timeouts().implicitlyWait(3000);
+        browser.wait(ec.textToBePresentInElement(this.cookieAcceptButton,"Accept All"),5000)
         this.cookieAcceptButton.click();
     }
 
 
     getFirstResultByPosition(name) {
-        browser.wait(ec.textToBePresentInElement(this.searchList, name), GLOBAL_TIMEOUT);
+        browser.wait(ec.textToBePresentInElement(this.searchList, name), 8000);
         return element(by.xpath(`//*[@class="search-result__item"][.//*[@class="search-result__item-name"][contains(normalize-space(.),"${name}")]]`));
 
     }
@@ -48,8 +57,8 @@ class CareerPage {
         element(by.css(".select2-selection")).sendKeys(location, Key.RETURN);
     }
 
-    getSelectedLocation() {
-        return this.selectedLocation.getText();
+    getSelectedLocation(location) {
+        return this.selectedLocation(location).getText();
     }
 
     load() {
@@ -76,10 +85,11 @@ class CareerPage {
         }, GLOBAL_TIMEOUT);
     }
 
-    applyForPosition(position) {
+    async applyForPosition(position) {
         this.applyLinkOfPosition(position).click();
         return browser.wait(ec.visibilityOf(this.jobDescription), GLOBAL_TIMEOUT);
     }
+
 }
 
 module.exports = CareerPage;
