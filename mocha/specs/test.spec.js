@@ -3,6 +3,10 @@
 const { expect } = require("chai");
 const CareerPage = require("../../pageObjects/careerPage_updated");
 const careerPage = new CareerPage();
+const SearchResultPage = require("../../pageObjects/searchResultPage")
+const searchResultPage = new SearchResultPage();
+const JobPage = require("../../pageObjects/jobPage")
+const jobPage = new JobPage();
 
 
 const testData = require('../data.json');
@@ -20,6 +24,7 @@ testData.forEach(data => {
         });
 
         describe("Careers page", () => {
+            
             it("should be opened", () => {
                 careerPage.acceptCookies();
                 return expect(careerPage.logo.isDisplayed()).to.eventually.be.true;
@@ -62,35 +67,35 @@ testData.forEach(data => {
                 beforeEach(() => {
                     careerPage.selectLocation(data.Location);
                     careerPage.toggleSkills(data.Skills);
-                    return careerPage.search().then(() => {
-                        position = careerPage.getFirstResultByPosition(data.PositionName);
+                    return searchResultPage.search().then(() => {
+                        position = searchResultPage.getFirstResultByPosition(data.PositionName);
                     });
                 });
 
                 it("should have fitting job found", () => {
-                    return expect(careerPage.nameOfPosition(position).isDisplayed()).to.eventually.be.true;
+                    return expect(searchResultPage.nameOfPosition(position).isDisplayed()).to.eventually.be.true;
 
                 });
 
                 it("should have job with proper location", () => {
-                    return expect(careerPage.locationOfPosition(position).getText()).to.eventually.contain(data.Location.toUpperCase());
+                    return expect(searchResultPage.locationOfPosition(position).getText()).to.eventually.contain(data.Location.toUpperCase());
                 });
 
                 it("should have apply button", () => {
-                    return expect(careerPage.applyLinkOfPosition(position).isDisplayed()).to.eventually.be.true;
+                    return expect(jobPage.applyLinkOfPosition(position).isDisplayed()).to.eventually.be.true;
                 });
 
                 describe("Apply for a job", () => {
                     beforeEach(() => {
-                        return careerPage.applyForPosition(position);
+                        return jobPage.applyForPosition(position);
                     });
 
                     it("should have proper position name in description", () => {
-                        return expect(careerPage.jobDescription.getText()).to.eventually.contain(data.PositionName);
+                        return expect(jobPage.jobDescription.getText()).to.eventually.contain(data.PositionName);
                     });
 
                     it("should be able to apply to job", () => {
-                        return expect(careerPage.applyForJob.isDisplayed()).to.eventually.be.true;
+                        return expect(jobPage.applyForJob.isDisplayed()).to.eventually.be.true;
                     });
                 });
             });

@@ -7,6 +7,16 @@ exports.config = {
     capabilities: {
         browserName: 'chrome'
     },
+   /* multiCapabilities: [{
+        'browserName': 'chrome',
+        'shardTestFiles': true,
+        'maxInstances': 2,
+      }, {
+        'browserName': 'chrome',
+        'shardTestFiles': true,
+        'maxInstances': 2,
+      }],
+      */
     directConnect: true,
     mochaOpts: {
         reporter: 'spec'
