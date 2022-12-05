@@ -25,7 +25,6 @@ class CareerPage extends CommonPage {
     }
 
     acceptCookies() {
-        //browser.manage().timeouts().implicitlyWait(3000);
         browser.wait(ec.textToBePresentInElement(this.cookieAcceptButton, "Accept All"), 5000)
         this.cookieAcceptButton.click();
     }

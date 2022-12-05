@@ -11,7 +11,7 @@ class CareerPage {
         this.cookieAcceptButton = element(by.css("[id=onetrust-accept-btn-handler]"))
 
         this.locationFilterBox = this.searchForm.element(by.css(".recruiting-search__location"))
-        //this.selectedLocation = this.locationFilterBox.element(by.css("[title=Debrecen]")
+
         this.getLocation = location => this.locationFilterBox.element(by.cssContainingText("title=Debrecen]", location));
 
         this.skillsSelect = this.searchForm.element(by.css('.multi-select-filter'));
@@ -24,24 +24,18 @@ class CareerPage {
         this.locationOfPosition = position => position.element(by.css('.search-result__location'));
         this.applyLinkOfPosition = position => position.element(by.css('.search-result__item-apply'));
         this.jobDescription = element(by.css('.recruiting-page__top-description'));
-        
+
         this.applyForJob = element(by.css("div.button__wrapper:nth-child(3) > a:nth-child(1) > span:nth-child(1)"))
 
         this.searchList = element(by.css(".search-result__list"))
 
-        //this.getResultByPosition = () => element(by.css("li.search-result__item:last-child"));
-
-        //this.getResultByPosition = name => this.searchResultItems.filter(item => {
-        //    return this.nameOfPosition(item).getText().then(position => position.trim() === name);
-        //}).first();
     }
     selectedLocation(location) {
         return this.locationFilterBox.element(by.css(`[title=${location}`))
     }
 
     acceptCookies() {
-        //browser.manage().timeouts().implicitlyWait(3000);
-        browser.wait(ec.textToBePresentInElement(this.cookieAcceptButton,"Accept All"),5000)
+        browser.wait(ec.textToBePresentInElement(this.cookieAcceptButton, "Accept All"), 5000)
         this.cookieAcceptButton.click();
     }
 

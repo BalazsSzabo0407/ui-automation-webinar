@@ -4,10 +4,12 @@ const { expect } = require('chai');
 const { Given, When, Then, setDefaultTimeout } = require('cucumber');
 const CareerPage = require('../../pageObjects/careerPage_cucumber');
 const careerPage = new CareerPage();
+const {After, Status} = require('cucumber');
 
 setDefaultTimeout(GLOBAL_TIMEOUT);
 
 Given(/the career page is opened/, () => {
+    //expect(2).to.eql(3)
     return careerPage.load();
 });
 careerPage.acceptCookies();
@@ -29,7 +31,7 @@ When(/the apply button of the (.+) position is clicked on/, (PositionName) => {
 });
 
 Then(/the logo should be visible/, () => {
-    return expect(careerPage.logo.isDisplayed()).to.eventually.be.true;
+    return expect(careerPage.logo.isDisplayed()).to.eventually.be.false;
 });
 
 Then(/the search form should be visible/, () => {
