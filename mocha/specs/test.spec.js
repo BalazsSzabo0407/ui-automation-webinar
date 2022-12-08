@@ -10,6 +10,7 @@ const jobPage = new JobPage();
 
 
 const testData = require('../data.json');
+let clickedCookie = false
 
 testData.forEach(data => {
     describe("Search for a job: " + data.PositionName, function () {
@@ -24,9 +25,13 @@ testData.forEach(data => {
         });
 
         describe("Careers page", () => {
-            
+        
+
             it("should be opened", () => {
+            if (clickedCookie == false){
                 careerPage.acceptCookies();
+                clickedCookie = true;
+            }
                 return expect(careerPage.logo.isDisplayed()).to.eventually.be.true;
             });
         });

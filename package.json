@@ -6,7 +6,6 @@
   "scripts": {
     "postinstall": "npm run wd:update",
     "wd:update": "webdriver-manager update",
-    "rimraf:screenshots": "rimraf ./screenshots/*",
     "test:cucumber": "rimraf ./screenshots/* && protractor ./cucumber/protractor.config.js",
     "test:mocha": "protractor ./mocha/protractor.config.js"
   },
